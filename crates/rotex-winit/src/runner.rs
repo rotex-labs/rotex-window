@@ -336,6 +336,9 @@ pub(crate) fn run(
         ));
     }
 
+    #[cfg(all(not(target_arch = "wasm32"), target_os = "linux"))]
+    let event_loop = create_event_loop()?;
+    #[cfg(not(all(not(target_arch = "wasm32"), target_os = "linux")))]
     let event_loop = EventLoop::new().map_err(event_loop_error)?;
     event_loop.set_control_flow(ControlFlow::Wait);
 
@@ -360,4 +363,33 @@ pub(crate) fn run(
 
     #[allow(unreachable_code)]
     Err(backend_error("unreachable winit runner state"))
+}
+
+/// RenderDoc's Vulkan layer does not expose `VK_KHR_wayland_surface`.
+/// Force the X11 backend so surface creation uses `VK_KHR_xcb_surface` instead.
+#[cfg(all(not(target_arch = "wasm32"), target_os = "linux"))]
+fn create_event_loop() -> Result<EventLoop<()>, WindowError> {
+    use winit::platform::x11::EventLoopBuilderExtX11;
+
+    if renderdoc_is_active() {
+        eprintln!("[winit] RenderDoc detected; using X11 backend for Vulkan compatibility");
+        EventLoop::builder()
+            .with_x11()
+            .build()
+            .map_err(event_loop_error)
+    } else {
+        EventLoop::new().map_err(event_loop_error)
+    }
+}
+
+#[cfg(all(not(target_arch = "wasm32"), target_os = "linux"))]
+fn renderdoc_is_active() -> bool {
+    const RENDERDOC_ENV_VARS: &[&str] = &[
+        "RENDERDOC_CAPFILE",
+        "RENDERDOC_CAPOPTS",
+        "RENDERDOC_CAPTUREOPTS",
+    ];
+    RENDERDOC_ENV_VARS
+        .iter()
+        .any(|var| std::env::var(var).is_ok())
 }
