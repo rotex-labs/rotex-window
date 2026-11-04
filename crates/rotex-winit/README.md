@@ -24,10 +24,6 @@ winit implementation of `rotex-window`.
 
 Version 0.1.0. On Linux, an active RenderDoc capture selects the X11 event loop so Vulkan surface creation does not require `VK_KHR_wayland_surface`.
 
-## Part of Rotex
-
-Rotex is a graphics HAL workspace. See [rotex-dev](https://github.com/rotex-labs/rotex-dev) for the architecture and the other crates.
-
 ## License
 
 Licensed under either of
