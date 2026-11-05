@@ -1,0 +1,11 @@
+[package]
+name = "rotex-window"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "Declarative window orchestration frontend for Rotex"
+repository = "https://github.com/rotex-labs/rotex-window"
+
+[dependencies]
+raw-window-handle = "0.6.2"
+thiserror = "2.0.18"
