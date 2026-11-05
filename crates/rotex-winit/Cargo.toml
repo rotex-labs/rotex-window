@@ -1,6 +1,6 @@
 [package]
 name = "rotex-winit"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "Winit backend provider for rotex-window"
@@ -8,5 +8,5 @@ repository = "https://github.com/rotex-labs/rotex-window"
 
 [dependencies]
 raw-window-handle = "0.6.2"
-rotex-window = { path = "../rotex-window", version = "0.1.0" }
+rotex-window = { path = "../rotex-window", version = "0.1.1" }
 winit = "0.30.13"

@@ -22,12 +22,12 @@ This repository describes windows, events, and the application loop, then runs t
 
 | Package | Description | Version |
 |---------|-------------|---------|
-| [`rotex-window`](crates/rotex-window/README.md) | Platform-neutral window and event orchestration | 0.1.0 |
-| [`rotex-winit`](crates/rotex-winit/README.md) | winit implementation of `rotex-window` | 0.1.0 |
+| [`rotex-window`](crates/rotex-window/README.md) | Platform-neutral window and event orchestration | 0.1.1 |
+| [`rotex-winit`](crates/rotex-winit/README.md) | winit implementation of `rotex-window` | 0.1.1 |
 
 ## Dependencies
 
-`rotex-winit` depends on `rotex-window` by path plus version inside this repository. A requirement that leaves the slice stays a crates.io version. Each package keeps its own version and its own release tag (`rotex-window-v0.1.0`, `rotex-winit-v0.1.0`).
+`rotex-winit` depends on `rotex-window` by path plus version inside this repository. A requirement that leaves the slice stays a crates.io version. Each package keeps its own version and its own release tag (`rotex-window-v0.1.1`, `rotex-winit-v0.1.1`).
 
 ## License
 
