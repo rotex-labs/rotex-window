@@ -9,6 +9,9 @@ thread_local! {
     static LAST_RAF_GAP_US: Cell<f64> = const { Cell::new(0.0) };
 }
 
+/// Microseconds between the two most recent animation frames.
+///
+/// Returns `0.0` until a second frame has been scheduled.
 pub fn last_rafgap_us() -> f64 {
     LAST_RAF_GAP_US.with(|gap| gap.get())
 }

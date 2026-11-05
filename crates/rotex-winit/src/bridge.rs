@@ -6,7 +6,9 @@ use winit::window::{CursorGrabMode, Window};
 
 use crate::error_map::backend_error;
 
+/// [`rotex_window::WindowBridge`] backed by a winit [`Window`].
 pub struct WinitBridge {
+    /// The winit window this bridge controls.
     pub window: Window,
 }
 
