@@ -2,6 +2,7 @@ use rotex_window::{EngineApp, Error as WindowError, WindowBackend, WindowDescrip
 
 use crate::runner;
 
+/// [`rotex_window::WindowBackend`] that runs the application on winit.
 #[derive(Default)]
 pub struct WinitBackend;
 
