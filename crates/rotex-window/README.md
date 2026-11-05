@@ -30,7 +30,7 @@ None.
 
 ## Status
 
-Version 0.1.0. This crate does not open a window by itself.
+Version 0.1.1. This crate does not open a window by itself.
 
 ## License
 
