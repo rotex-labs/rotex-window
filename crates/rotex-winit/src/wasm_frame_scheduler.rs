@@ -1,8 +1,8 @@
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;
 
+use rotex_window::platform::Instant;
 use wasm_bindgen::prelude::*;
-use web_time::Instant;
 
 thread_local! {
     static LAST_RAF_AT: RefCell<Option<Instant>> = RefCell::new(None);

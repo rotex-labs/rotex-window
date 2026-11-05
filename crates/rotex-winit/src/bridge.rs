@@ -55,10 +55,3 @@ impl HasWindowHandle for WinitBridge {
         self.window.window_handle()
     }
 }
-
-#[cfg(target_arch = "wasm32")]
-impl WinitBridge {
-    pub(crate) fn pre_present_notify(&self) {
-        self.window.pre_present_notify();
-    }
-}

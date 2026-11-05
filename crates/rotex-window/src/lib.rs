@@ -29,6 +29,8 @@ pub mod event;
 pub mod keyboard;
 /// Entry point that runs an application on a backend.
 pub mod orchestrator;
+/// Clock, logging, and one-shot initialization shared by native and wasm.
+pub mod platform;
 
 pub use app::EngineApp;
 pub use backend::WindowBackend;

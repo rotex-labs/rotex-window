@@ -1,8 +1,4 @@
-#[cfg(not(target_arch = "wasm32"))]
-use std::time::Instant;
-#[cfg(target_arch = "wasm32")]
-use web_time::Instant;
-
+use rotex_window::platform::Instant;
 use rotex_window::{
     EngineApp, EngineEvent, Error as WindowError, WindowBridge, WindowDescriptor, WindowMode,
 };
@@ -28,6 +24,10 @@ struct WinitApplication {
     startup_error: Option<WindowError>,
     #[cfg(target_arch = "wasm32")]
     frame_loop_started: bool,
+    #[cfg(target_arch = "wasm32")]
+    init_sent: bool,
+    #[cfg(target_arch = "wasm32")]
+    init_wait_frames: u32,
 }
 
 impl WinitApplication {
@@ -40,15 +40,43 @@ impl WinitApplication {
             startup_error: None,
             #[cfg(target_arch = "wasm32")]
             frame_loop_started: false,
+            #[cfg(target_arch = "wasm32")]
+            init_sent: false,
+            #[cfg(target_arch = "wasm32")]
+            init_wait_frames: 0,
+        }
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    fn send_init_when_laid_out(&mut self) {
+        if self.init_sent {
+            return;
+        }
+        let Some(bridge) = self.bridge.as_ref() else {
+            return;
+        };
+        let (width, height) = bridge.extent();
+        self.init_wait_frames = self.init_wait_frames.saturating_add(1);
+        // The canvas reports 1x1 until the page lays it out. Wait for a real
+        // size, then give up so a broken layout cannot stall the application.
+        const MIN_EXTENT: u32 = 16;
+        const MAX_WAIT_FRAMES: u32 = 120;
+        if (width >= MIN_EXTENT && height >= MIN_EXTENT) || self.init_wait_frames >= MAX_WAIT_FRAMES
+        {
+            self.init_sent = true;
+            self.app.on_event(EngineEvent::Init, bridge);
         }
     }
 
     #[cfg(target_arch = "wasm32")]
     fn on_frame(&mut self) {
+        self.send_init_when_laid_out();
         let Some(bridge) = self.bridge.as_ref() else {
             return;
         };
-        crate::wasm_pre_present::set_target(bridge);
+        if !self.init_sent {
+            return;
+        }
         let now = Instant::now();
         let delta_seconds = self
             .last_update
@@ -228,9 +256,6 @@ impl ApplicationHandler for WinitApplication {
 
         self.bridge = Some(bridge);
         self.last_update = Some(Instant::now());
-        if let Some(bridge) = self.bridge.as_ref() {
-            self.app.on_event(EngineEvent::Init, bridge);
-        }
 
         if !self.frame_loop_started {
             self.frame_loop_started = true;
