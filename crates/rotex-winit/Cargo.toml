@@ -1,0 +1,12 @@
+[package]
+name = "rotex-winit"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "Winit backend provider for rotex-window"
+repository = "https://github.com/rotex-labs/rotex-winit"
+
+[dependencies]
+raw-window-handle = "0.6.2"
+rotex-window = { version = "0.1.0" }
+winit = "0.30.13"
